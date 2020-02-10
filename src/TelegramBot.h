@@ -8,12 +8,12 @@
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 
-#define TELEGRAM_HOST       "api.telegram.org"
-#define TELEGRAM_PORT       443
-#define TELEGRAM_MAX_MSG    3
+#define TELEGRAM_HOST           "api.telegram.org"
+#define TELEGRAM_PORT           443
+#define TELEGRAM_MAX_MSG        3
+#define TELEGRAM_TTR            10000
 
-typedef bool (*DataAvailable)();
-typedef byte (*GetNextByte)();
+#define TELEGRAM_EVT_NEW_MSG    1
 
 struct User {
     long id;
@@ -39,6 +39,10 @@ struct Message {
     float latitude;
     String type;
 };
+
+typedef bool (*DataAvailable)();
+typedef byte (*GetNextByte)();
+typedef void (*EventCallback)(Message *msg, long lastUpdateId);
 
 /*
 'message_id' => true,
@@ -92,19 +96,48 @@ class TelegramBot {
         void enableDebugMode();
         User getMe();
         int getUpdates(int offset = 0, int limit = TELEGRAM_MAX_MSG);
-        bool sendMessage(long chatId, String text, String parseMode = "", bool disablePreview = false, long replyToMessageId = 0, bool disableNotification = false);
-        Message* getMessages(bool forceUpdate = true);
-        Message getLastMessage(bool forceUpdate = true);
-        long getLastMessageId();
+        DynamicJsonDocument sendMessage(long chatId, String text, String parseMode = "", bool disablePreview = false, long replyToMessageId = 0, bool disableNotification = false);
+        Message* getMessages(bool forceUpdate = false);
+        Message getLastMessage(bool forceUpdate = false);
+        long getLastUpdateId();
+        int loop();
+        bool on(int event, EventCallback callback);
+        DynamicJsonDocument sendContact(long chatId, String phoneNumber, String firstName, String lastName = "", long replyToMessageId = 0, bool disableNotification = false);
+        DynamicJsonDocument sendChatAction(long chatId, String action);
+        DynamicJsonDocument sendLocation(long chatId, float latitude, float longitude, long replyToMessageId = 0, bool disableNotification = false, int livePeriod = 0);
+        DynamicJsonDocument editMessageReplyMarkup(long chatId, long messageId, long inlineMessageId = 0);
+        DynamicJsonDocument deleteMessage(long chatId, long messageId);
+        DynamicJsonDocument editMessageLiveLocation(long chatId, long messageId, long inlineMessageId, float latitude, float longitude);
+        DynamicJsonDocument stopMessageLiveLocation(long chatId, long messageId, long inlineMessageId);
+        DynamicJsonDocument forwardMessage(long chatId, long fromChatId, long messageId, bool disableNotification = false);
+        DynamicJsonDocument kickChatMember(long chatId, long userId, long untilDate = -1);
+        DynamicJsonDocument unbanChatMember(long chatId, long userId);
+        DynamicJsonDocument editMessageText(long chatId, long messageId, String text, String parseMode = "", bool disablePreview = false, long inlineMessageId = 0);
+        DynamicJsonDocument editMessageCaption(long chatId, long messageId, String caption = "", long inlineMessageId = 0);
 
-        bool sendContact(long chatId, String phoneNumber, String firstName, String lastName = "", long replyToMessageId = 0, bool disableNotification = false);
-        bool sendChatAction(long chatId, String action);
-        bool sendLocation(long chatId, float latitude, float longitude, long replyToMessageId = 0, bool disableNotification = false, int livePeriod = 0);
-        bool editMessageLiveLocation(long chatId, long messageId, long inlineMessageId, float latitude, float longitude);
-        bool stopMessageLiveLocation(long chatId, long messageId, long inlineMessageId);
-        bool forwardMessage(long chatId, long fromChatId, long messageId, bool disableNotification = false);
+        /* @todo implement */
         bool sendPhoto(long chatId, String photo, String caption = "", long replyToMessageId = 0, bool disableNotification = false, String parseMode = "");
-        bool sendPhoto(long chatId, int fileSize, DataAvailable dataAvailableCallback, GetNextByte getNextByteCallback, String caption = "", long replyToMessageId = 0, bool disableNotification = false, String parseMode = "");
+        bool sendPhoto(
+            long chatId, 
+            int fileSize, 
+            DataAvailable dataAvailableCallback, 
+            GetNextByte getNextByteCallback, 
+            String caption = "", 
+            long replyToMessageId = 0, 
+            bool disableNotification = false, 
+            String parseMode = ""
+        );
+        bool sendDocument(long chatId, String photo, String caption = "", long replyToMessageId = 0, bool disableNotification = false, String parseMode = "");
+        bool sendDocument(
+            long chatId, 
+            int fileSize, 
+            DataAvailable dataAvailableCallback, 
+            GetNextByte getNextByteCallback, 
+            String caption = "", 
+            long replyToMessageId = 0, 
+            bool disableNotification = false, 
+            String parseMode = ""
+        );
     private:
         String token;
         WiFiClientSecure *client;
@@ -112,7 +145,9 @@ class TelegramBot {
         User botUser;
         Message messages[TELEGRAM_MAX_MSG];
         String baseAction;
-        long lastMessageId = 0;
+        long lastUpdateId = 0;
+        long lastUpdateTime = 0;
+        EventCallback onNewMessage;
         DynamicJsonDocument sendGetCommand(String action);
         DynamicJsonDocument sendPostCommand(String action, JsonObject payload);
         DynamicJsonDocument buildJsonResponseError(int statusCode, String message);
