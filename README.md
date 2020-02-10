@@ -8,6 +8,6 @@
 
 ## Table of content
 
-    - [Get started !](https://github.com/ender9108/TelegramBot)/doc/getStarted.md)
-    - [Class documentation](https://github.com/ender9108/TelegramBot)/doc/classDocumentation.md)
-    - [More examples](https://github.com/ender9108/TelegramBot)/doc/exemple.md)
+    - [Get started !](https://github.com/ender9108/TelegramBot/doc/getStarted.md)
+    - [Class documentation](https://github.com/ender9108/TelegramBot/doc/classDocumentation.md)
+    - [More examples](https://github.com/ender9108/TelegramBot/doc/exemple.md)
