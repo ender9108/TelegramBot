@@ -156,7 +156,14 @@ DynamicJsonDocument TelegramBot::sendMessage(
   return response;
 }
 
-DynamicJsonDocument TelegramBot::sendContact(long chatId, String phoneNumber, String firstName, String lastName = "", long replyToMessageId = 0, bool disableNotification = false) {
+DynamicJsonDocument TelegramBot::sendContact(
+  long chatId, 
+  String phoneNumber, 
+  String firstName, 
+  String lastName, 
+  long replyToMessageId, 
+  bool disableNotification
+) {
   const size_t CAPACITY = JSON_OBJECT_SIZE(6);
   StaticJsonDocument<CAPACITY> doc;
 
@@ -186,7 +193,14 @@ DynamicJsonDocument TelegramBot::sendChatAction(long chatId, String action) {
   return response;
 }
 
-DynamicJsonDocument TelegramBot::sendLocation(long chatId, float latitude, float longitude, long replyToMessageId = 0, bool disableNotification = false, int livePeriod = 0) {
+DynamicJsonDocument TelegramBot::sendLocation(
+  long chatId, 
+  float latitude, 
+  float longitude, 
+  long replyToMessageId, 
+  bool disableNotification, 
+  int livePeriod
+) {
   const size_t CAPACITY = JSON_OBJECT_SIZE(6);
   StaticJsonDocument<CAPACITY> doc;
 
@@ -203,7 +217,7 @@ DynamicJsonDocument TelegramBot::sendLocation(long chatId, float latitude, float
   return response;
 }
 
-DynamicJsonDocument TelegramBot::editMessageReplyMarkup(long chatId, long messageId, long inlineMessageId = 0) {
+DynamicJsonDocument TelegramBot::editMessageReplyMarkup(long chatId, long messageId, long inlineMessageId) {
   const size_t CAPACITY = JSON_OBJECT_SIZE(3);
   StaticJsonDocument<CAPACITY> doc;
 
@@ -260,7 +274,7 @@ DynamicJsonDocument TelegramBot::stopMessageLiveLocation(long chatId, long messa
   return response;
 }
 
-DynamicJsonDocument TelegramBot::forwardMessage(long chatId, long fromChatId, long messageId, bool disableNotification = false) {
+DynamicJsonDocument TelegramBot::forwardMessage(long chatId, long fromChatId, long messageId, bool disableNotification) {
   const size_t CAPACITY = JSON_OBJECT_SIZE(4);
   StaticJsonDocument<CAPACITY> doc;
 
@@ -275,7 +289,7 @@ DynamicJsonDocument TelegramBot::forwardMessage(long chatId, long fromChatId, lo
   return response;
 }
 
-DynamicJsonDocument TelegramBot::kickChatMember(long chatId, long userId, long untilDate = -1) {
+DynamicJsonDocument TelegramBot::kickChatMember(long chatId, long userId, long untilDate) {
   const size_t CAPACITY = JSON_OBJECT_SIZE(3);
   StaticJsonDocument<CAPACITY> doc;
 
@@ -305,7 +319,7 @@ DynamicJsonDocument TelegramBot::unbanChatMember(long chatId, long userId) {
   return response;
 }
 
-DynamicJsonDocument TelegramBot::editMessageText(long chatId, long messageId, String text, String parseMode = "", bool disablePreview = false, long inlineMessageId = 0) {
+DynamicJsonDocument TelegramBot::editMessageText(long chatId, long messageId, String text, String parseMode, bool disablePreview, long inlineMessageId) {
   const size_t CAPACITY = JSON_OBJECT_SIZE(6);
   StaticJsonDocument<CAPACITY> doc;
 
@@ -322,7 +336,7 @@ DynamicJsonDocument TelegramBot::editMessageText(long chatId, long messageId, St
   return response;
 }
 
-DynamicJsonDocument TelegramBot::editMessageCaption(long chatId, long messageId, String caption = "", long inlineMessageId = 0) {
+DynamicJsonDocument TelegramBot::editMessageCaption(long chatId, long messageId, String caption, long inlineMessageId) {
   const size_t CAPACITY = JSON_OBJECT_SIZE(4);
   StaticJsonDocument<CAPACITY> doc;
 
