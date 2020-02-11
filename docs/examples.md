@@ -18,6 +18,9 @@ void myCallback(Update *update) {
 void setup() {
     // Enable debug mode to show more infos in console
     tBot.enableDebugMode();
+    
+    // Set ttr at 10s
+    tBot.setTimeToRefresh(10000);
 
     // Add callback on new update detected
     tBot.on(TELEGRAM_EVT_NEW_MSG, myCallback);

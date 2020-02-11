@@ -26,6 +26,7 @@ class TelegramBot {
         TelegramBot(WiFiClientSecure &wifiClient, String token);
         void setToken(String token);
         void enableDebugMode();
+        void setTimeToRefresh(long ttr);
         User getMe();
         int getUpdates(int offset = 0, int limit = TELEGRAM_MAX_MSG);
         DynamicJsonDocument sendMessage(long chatId, String text, String parseMode = "", bool disablePreview = false, long replyToMessageId = 0, bool disableNotification = false);
@@ -80,6 +81,7 @@ class TelegramBot {
         String baseAction;
         long lastUpdateId = 0;
         long lastUpdateTime = 0;
+        long timeToRefresh = TELEGRAM_TTR;
         EventCallback onNewMessage;
         DynamicJsonDocument sendGetCommand(String action);
         DynamicJsonDocument sendPostCommand(String action, JsonObject payload);

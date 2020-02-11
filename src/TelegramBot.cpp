@@ -19,6 +19,10 @@ void TelegramBot::enableDebugMode() {
   this->debugMode = true;
 }
 
+void TelegramBot::setTimeToRefresh(long ttr) {
+  this->timeToRefresh = ttr;
+}
+
 void TelegramBot::logger(String message, bool endLine) {
   if (true == this->debugMode) {
     if (true == endLine) {
@@ -44,7 +48,7 @@ bool TelegramBot::on(int event, EventCallback callback) {
 }
 
 int TelegramBot::loop() {
-  if (millis() > this->lastUpdateTime + TELEGRAM_TTR)  {
+  if (millis() > this->lastUpdateTime + this->timeToRefresh)  {
       this->lastUpdateTime = millis();
       this->logger(F("Checking for messages.. "));
 
