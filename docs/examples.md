@@ -12,13 +12,13 @@ WiFiClientSecure client;
 TelegramBot tBot(client, TELEGRAM_TOKEN);
 
 void myCallback(Update *update) {
-
+    /* My treatment */
 }
 
 void setup() {
     // Enable debug mode to show more infos in console
     tBot.enableDebugMode();
-    
+
     // Set ttr at 10s
     tBot.setTimeToRefresh(10000);
 
