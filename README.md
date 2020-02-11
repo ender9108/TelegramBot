@@ -8,6 +8,6 @@
 
 ## Table of content
 
-- [Get started !](getStarted.md)
-- [Class documentation](classDocumentation.md)
-- [More examples](examples.md)
+- [Get started !](docs/getStarted.md)
+- [Class documentation](docs/classDocumentation.md)
+- [More examples](docs/examples.md)
