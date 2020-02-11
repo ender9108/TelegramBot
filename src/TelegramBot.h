@@ -11,14 +11,14 @@
 
 #define TELEGRAM_HOST           "api.telegram.org"
 #define TELEGRAM_PORT           443
-#define TELEGRAM_MAX_MSG        3
+#define TELEGRAM_MAX_UPDATE     3
 #define TELEGRAM_TTR            10000
 
 #define TELEGRAM_EVT_NEW_MSG    1
 
 typedef bool (*DataAvailable)();
 typedef byte (*GetNextByte)();
-typedef void (*EventCallback)(Message *msg, long lastUpdateId);
+typedef void (*EventCallback)(Update *update);
 
 class TelegramBot {
     public:
@@ -28,10 +28,10 @@ class TelegramBot {
         void enableDebugMode();
         void setTimeToRefresh(long ttr);
         User getMe();
-        int getUpdates(int offset = 0, int limit = TELEGRAM_MAX_MSG);
+        int getUpdates(int offset = 0, int limit = TELEGRAM_MAX_UPDATE);
         DynamicJsonDocument sendMessage(long chatId, String text, String parseMode = "", bool disablePreview = false, long replyToMessageId = 0, bool disableNotification = false);
-        Message* getMessages(bool forceUpdate = false);
-        Message getLastMessage(bool forceUpdate = false);
+        Update* getUpdatesList(bool forceUpdate = false);
+        Update getLastUpdate(bool forceUpdate = false);
         long getLastUpdateId();
         int loop();
         bool on(int event, EventCallback callback);
@@ -77,16 +77,17 @@ class TelegramBot {
         WiFiClientSecure *client;
         bool debugMode = false;
         User botUser;
-        Message messages[TELEGRAM_MAX_MSG];
+        Update updates[TELEGRAM_MAX_UPDATE];
         String baseAction;
         long lastUpdateId = 0;
         long lastUpdateTime = 0;
         long timeToRefresh = TELEGRAM_TTR;
-        EventCallback onNewMessage;
+        EventCallback onNewUpdate;
         DynamicJsonDocument sendGetCommand(String action);
         DynamicJsonDocument sendPostCommand(String action, JsonObject payload);
         DynamicJsonDocument buildJsonResponseError(int statusCode, String message);
-        bool parseMessages(JsonObject message, int index);
+        bool parseUpdates(JsonObject message, int index);
+        Update hydrateUpdateStruct(JsonObject update);
         Message hydrateMessageStruct(JsonObject message);
         User hydrateUserStruct(JsonObject message);
         Chat hydrateChatStruct(JsonObject jsonChat);
