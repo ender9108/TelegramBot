@@ -10,4 +10,4 @@
 
 - [Get started !](getStarted.md)
 - [Class documentation](classDocumentation.md)
-- [More examples](exemples.md)
+- [More examples](examples.md)
