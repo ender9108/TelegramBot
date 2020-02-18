@@ -13,7 +13,7 @@
 #define TELEGRAM_MAX_UPDATE     3
 #define TELEGRAM_TTR            30000
 
-#define TELEGRAM_EVT_NEW_MSG    1
+#define TELEGRAM_EVT_NEW_UPDATE 1
 #define TELEGRAM_EVT_ERROR      9
 
 typedef bool (*DataAvailable)();

@@ -43,7 +43,7 @@ void TelegramBot::resume() {
 
 bool TelegramBot::on(int event, EventCallback callback) {
   switch (event) {
-    case TELEGRAM_EVT_NEW_MSG:
+    case TELEGRAM_EVT_NEW_UPDATE:
       this->onNewUpdate = callback;
       return true;
       break;
