@@ -1,8 +1,9 @@
 # Examples
 
-## Check new updates every X secondes
+## Check new updates every 30 secondes
 ```c++
 #include <Arduino.h>
+#include <ArduinoJson.h>
 #include <TelegramBot.h>
 #include <WiFiClientSecure.h>
 
@@ -11,19 +12,21 @@
 WiFiClientSecure client;
 TelegramBot tBot(client, TELEGRAM_TOKEN);
 
-void myCallback(Update *update) {
-    /* My treatment */
+void onNewUpdateCallback(JsonArray updates, int newMessages) {
+    Serial.println("New messages arrived !!");
+    // Display JsonArray updates on serial port
+    serializeJson(updates, Serial);
 }
 
 void setup() {
     // Enable debug mode to show more infos in console
     tBot.enableDebugMode();
 
-    // Set ttr at 10s
-    tBot.setTimeToRefresh(10000);
+    // Set ttr at 30s (default: 10s)
+    tBot.setTimeToRefresh(30000);
 
     // Add callback on new update detected
-    tBot.on(TELEGRAM_EVT_NEW_MSG, myCallback);
+    tBot.on(TELEGRAM_EVT_NEW_MSG, onNewUpdateCallback);
 }
 
 void loop() {
@@ -34,6 +37,7 @@ void loop() {
 ## Send message
 ```c++
 #include <Arduino.h>
+#include <ArduinoJson.h>
 #include <TelegramBot.h>
 #include <WiFiClientSecure.h>
 
@@ -41,23 +45,12 @@ void loop() {
 
 WiFiClientSecure client;
 TelegramBot tBot(client, TELEGRAM_TOKEN);
-
-void myCallback(Update *update) {
-    /* My treatment */
-}
+long chatId = 12345;
 
 void setup() {
-    // Enable debug mode to show more infos in console
-    tBot.enableDebugMode();
-
-    // Set ttr at 10s
-    tBot.setTimeToRefresh(10000);
-
-    // Add callback on new update detected
-    tBot.on(TELEGRAM_EVT_NEW_MSG, myCallback);
 }
 
 void loop() {
-    tBot.loop();
+    tBot.sendMessage(chatId, "Hello, I tried to send a message with TelegramBot library !!");
 }
 ```
