@@ -9,5 +9,5 @@
 ## Table of content
 
 - [Get started !](docs/get_started.md)
-- [Class documentation](docs/class-documentation.md)
+- [Class documentation](docs/class_documentation.md)
 - [More examples](docs/examples.md)
