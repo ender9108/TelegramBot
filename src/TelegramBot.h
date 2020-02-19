@@ -76,7 +76,7 @@ class TelegramBot {
             String parseMode = ""
         );
     private:
-        String token;
+        String token = "";
         WiFiClientSecure *client;
         bool debugMode = false;
         bool loopOn = true;

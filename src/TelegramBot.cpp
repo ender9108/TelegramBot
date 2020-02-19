@@ -356,6 +356,7 @@ DynamicJsonDocument TelegramBot::sendDocument(
 }
 
 DynamicJsonDocument TelegramBot::sendGetCommand(String action) {
+  this->logger("----- START sendGettCommand -----");
   DynamicJsonDocument response(4096);
 
   HTTPClient httpClient;
@@ -378,12 +379,19 @@ DynamicJsonDocument TelegramBot::sendGetCommand(String action) {
     response = this->buildJsonResponseError(httpCode, httpClient.getString());
   }
 
+  if (false == response["ok"]) {
+    this->logger("---- HTTP RESPONSE ERROR : " + String(response["message"].as<String>()));
+  }
+
   httpClient.end();
+  this->logger("----- END sendGettCommand -----\n");
 
   return response;
 }
 
 DynamicJsonDocument TelegramBot::sendPostCommand(String action, JsonObject payloadObject) {
+  this->logger("----- START sendPostCommand -----");
+
   DynamicJsonDocument response(4096);
 
   HTTPClient httpClient;
@@ -414,7 +422,12 @@ DynamicJsonDocument TelegramBot::sendPostCommand(String action, JsonObject paylo
     response = this->buildJsonResponseError(httpCode, httpClient.getString());
   }
 
+  if (false == response["ok"]) {
+    this->logger("---- HTTP RESPONSE ERROR : " + String(response["message"].as<String>()));
+  }
+
   httpClient.end();
+  this->logger("----- END sendPostCommand -----\n");
 
   return response;
 }

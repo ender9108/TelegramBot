@@ -5,19 +5,19 @@
     TelegramBot(WiFiClientSecure &wifiClient, String token);
 ```
 
-### Set telegram bot token
+### Set telegram bot token
 
 ```c++
     void setToken(String token);
 ```
 
-### Enable debug mode
+### Enable debug mode
 
 ```c++
     void enableDebugMode();
 ```
 
-### Change time to refresh
+### Change time to refresh
 
 Change time loop to check updates
 
@@ -25,12 +25,12 @@ Change time loop to check updates
     void setTimeToRefresh(long ttr);
 ```
 
-### Stop loop
+### Stop loop
 ```c++
     void pause();
 ```
 
-### Restart loop
+### Restart loop
 
 ```c++
     void resume();
@@ -42,18 +42,18 @@ Change time loop to check updates
     long getLastUpdateId();
 ```
 
-### Start loop 
+### Start loop 
 
 ```c++
     int loop();
 ```
 
-### Return number of update and pupulate property JsonArray updates
+### Return number of update and pupulate property JsonArray updates
 
 ```c++
     int getUpdates(int offset = 0, int limit = TELEGRAM_MAX_UPDATE);
 ```
-### Set callback on event 
+### Set callback on event 
 
 Actually just TELEGRAM_EVT_NEW_UPDATE available
 
@@ -61,13 +61,13 @@ Actually just TELEGRAM_EVT_NEW_UPDATE available
     bool on(int event, EventCallback callback);
 ```
 
-### 
+### Return bot infos
 
 ```c++
     JsonObject getMe();
 ```
 
-### Send message on chat
+### Send message on chat
 
 ```c++
     DynamicJsonDocument sendMessage(
